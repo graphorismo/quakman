@@ -5,15 +5,12 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Window.hpp>
 #include <bits/chrono.h>
-#include <chrono>
 #include <variant>
 
 using namespace Quakman::Graphics;
 
-SfmlGraphicalEngine::SfmlGraphicalEngine(std::int16_t width, std::int16_t height, std::int8_t maxFPS)
-: window(sf::VideoMode(width, height), "Quakman"),
-  timePerFrame(std::chrono::milliseconds{1000 / maxFPS}),
-  maxFPS(maxFPS)
+SfmlGraphicalEngine::SfmlGraphicalEngine(std::int16_t width, std::int16_t height)
+: window(sf::VideoMode(width, height), "Quakman")
 {
 
 }
@@ -33,26 +30,13 @@ void SfmlGraphicalEngine::LoadTexture(Drawable drawable)
 void SfmlGraphicalEngine::Draw(Drawable drawable, Math::Vector2i position)
 {
     drawQueue.push({drawable, position});
-    if (CanDrawSingleFrame()) DrawQueue();
+    DrawQueue();
 }
 
 void SfmlGraphicalEngine::Draw(Writeable writeable, Math::Vector2i position) 
 {
     drawQueue.push({writeable, position});
-    if (CanDrawSingleFrame()) DrawQueue();
-}
-
-bool SfmlGraphicalEngine::CanDrawSingleFrame()
-{
-    auto timeDifference = std::chrono::steady_clock::now() - startTime;
-    auto diffInMillisec = 
-        std::chrono::round<std::chrono::milliseconds>(timeDifference);
-    if(diffInMillisec / timePerFrame > fpsCounter)
-    {
-        fpsCounter <= maxFPS ? fpsCounter+=1 : fpsCounter=0;
-        return true;
-    }
-    return false;
+    DrawQueue();
 }
 
 void SfmlGraphicalEngine::DrawQueue()

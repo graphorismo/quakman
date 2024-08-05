@@ -17,10 +17,15 @@ void RunGraphicalThread(std::shared_ptr<Quakman::Threads::MainToGraphicMailBox> 
     bool receivedExitCommand = false;
     auto graphicalEngine = 
         std::shared_ptr<Quakman::Graphics::AbstractGraphicalOutput>
-            (new Quakman::Graphics::SfmlGraphicalEngine(800, 600, 60));
+            (new Quakman::Graphics::SfmlGraphicalEngine(800, 600));
 
     while(!receivedExitCommand)
     {
+
+        auto startTime = 
+            std::chrono::round<std::chrono::milliseconds>
+                (std::chrono::steady_clock::now());
+
         mailBox->mutex.lock();
         if (mailBox->downwardMessages.empty())
         {
@@ -62,6 +67,17 @@ void RunGraphicalThread(std::shared_ptr<Quakman::Threads::MainToGraphicMailBox> 
             default:
                 continue;
         }
+
+        auto endTime = 
+            std::chrono::round<std::chrono::milliseconds>
+                (std::chrono::steady_clock::now());
+
+        auto processTime = endTime - startTime;
+
+        const int maxFPS = 60;
+        auto remainTime = processTime % (1000 / maxFPS);
+
+        std::this_thread::sleep_for(remainTime);
     }
 }
 

@@ -18,7 +18,7 @@ namespace Quakman::Graphics
     class SfmlGraphicalEngine : public AbstractGraphicalOutput
     {
     public:
-        SfmlGraphicalEngine(std::int16_t width, std::int16_t height, std::int8_t maxFPS);
+        SfmlGraphicalEngine(std::int16_t width, std::int16_t height);
 
         virtual void LoadTexture(Drawable drawable) override;
         virtual void Draw(Drawable drawable, Math::Vector2i position) override;
@@ -32,8 +32,5 @@ namespace Quakman::Graphics
         std::queue<std::pair<std::variant<Drawable,Writeable>, Math::Vector2i>> drawQueue;
         std::unordered_map<Drawable, sf::Texture> drawableToTexture;
         std::chrono::time_point<std::chrono::steady_clock> startTime = std::chrono::steady_clock::now();
-        std::chrono::milliseconds timePerFrame;
-        std::int8_t fpsCounter = 0;
-        std::int8_t maxFPS;
     };
 }
