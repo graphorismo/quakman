@@ -1,5 +1,6 @@
 
 #include <chrono>
+#include <cmath>
 #include <memory>
 #include <thread>
 #include <variant>
@@ -102,12 +103,19 @@ void RunMainThread()
         );
     mainToGraphicMailBox->mutex.unlock();
 
+    float runner = 0.0f;
     while (true) 
     {
+        mainToGraphicMailBox->mutex.lock();
         mainToGraphicMailBox->downwardMessages.push
         ({.command= Quakman::Threads::GraphicalThreadCommands::DRAW, 
-            .position = {400,200}, .data = drawableWall}
+            .position = {.x=static_cast<std::int16_t>(300+static_cast<int>(std::sin(runner))),
+                        .y=static_cast<std::int16_t>(100+static_cast<int>(100*runner))}, 
+                        .data = drawableWall}
         );
+        mainToGraphicMailBox->mutex.unlock();
+        runner+=0.05f;
+        if(runner > 1.0f) runner = 0.0f;
         std::this_thread::sleep_for(std::chrono::milliseconds{100});
     }
 
