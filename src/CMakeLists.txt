@@ -7,6 +7,10 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(QuakMan main.cpp
 
+    audio/AbstractAudioOutput.hpp
+    audio/SfmlAudioEngine.hpp audio/SfmlAudioEngine.cpp
+    audio/Soundable.hpp audio/Soundable.cpp
+
     graphics/AbstractGraphicalOutput.hpp
     graphics/Drawable.hpp graphics/Drawable.cpp
     graphics/SfmlGraphicalEngine.hpp graphics/SfmlGraphicalEngine.cpp
@@ -19,4 +23,4 @@ add_executable(QuakMan main.cpp
     threads/Report.hpp
 )
 
-target_link_libraries(QuakMan sfml-system sfml-graphics)
+target_link_libraries(QuakMan sfml-system sfml-graphics sfml-audio)

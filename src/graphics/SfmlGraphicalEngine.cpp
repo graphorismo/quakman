@@ -50,7 +50,6 @@ void SfmlGraphicalEngine::DrawQueue()
         {
             auto drawable = std::get<Drawable>(pair.first);
             sf::Sprite sprite;
-            if (drawableToTexture.find(drawable) == drawableToTexture.end()) LoadTexture(drawable);
             sprite.setTexture(drawableToTexture[drawable]);
 
             sprite.setPosition(pair.second.x, pair.second.y);

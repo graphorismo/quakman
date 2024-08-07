@@ -5,6 +5,7 @@
 #include "../math/Vector2i.hpp"
 #include "../graphics/Drawable.hpp"
 #include "../graphics/Writeable.hpp"
+#include "../audio/Soundable.hpp"
 #include "MailBox.hpp"
 #include "Report.hpp"
 
@@ -27,4 +28,23 @@ namespace Quakman::Threads
     };
 
     using MainToGraphicMailBox = MailBox<Report, GraphicalThreadInput>;
+
+    enum class AudioThreadCommands
+    {
+        PLAY,
+        LOAD,
+        REPORT,
+        PAUSE,
+        EXIT
+    };
+
+    struct AudioThreadInput
+    {
+        AudioThreadCommands command; 
+        float volume;
+        float pitch;
+        Quakman::Audio::Soundable data;
+    };
+
+    using MainToAudioMailBox = MailBox<Report, AudioThreadInput>;
 }
