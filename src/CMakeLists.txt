@@ -21,6 +21,9 @@ add_executable(QuakMan main.cpp
     threads/MailBox.hpp
     threads/Messages.hpp
     threads/Report.hpp
+    threads/AudioTickedLoop.hpp  threads/AudioTickedLoop.cpp
+    threads/GraphicalTickedLoop.hpp  threads/GraphicalTickedLoop.cpp
+    threads/TickedLoop.hpp  threads/TickedLoop.cpp
 )
 
 target_link_libraries(QuakMan sfml-system sfml-graphics sfml-audio)

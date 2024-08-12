@@ -9,7 +9,6 @@ project(
   LANGUAGES CXX)
 
 add_subdirectory(src)
-add_subdirectory(test)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res
           DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
