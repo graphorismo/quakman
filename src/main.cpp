@@ -11,7 +11,7 @@
 
 int main(int argc, char* argv[])
 {
-    FLAGS_logtostderr = 1;
+    fLB::FLAGS_alsologtostderr = 1;
     google::InitGoogleLogging(argv[0]);
     gflags::ParseCommandLineFlags(&argc, &argv, true);
     google::InstallFailureSignalHandler();
@@ -19,25 +19,25 @@ int main(int argc, char* argv[])
     auto mainToGraphicMailBox = 
         std::shared_ptr<Quakman::Threads::MainToGraphicMailBox>
                 (new Quakman::Threads::MainToGraphicMailBox());
-    VLOG(1) << "Create a mail box between main and graphical threads"; 
+    DLOG(INFO) << "Create a mail box between main and graphical threads"; 
 
     auto graphicalTickedLoop = Quakman::Threads::GraphicalTickedLoop(mainToGraphicMailBox);
-    graphicalTickedLoop.SetMaxTicksPerSecond(60);
-    VLOG(1) << "Initialize a Graphical Ticked Loop object";
+    graphicalTickedLoop.SetMaxTicksPerSecond(1);
+    DLOG(INFO) << "Initialize a Graphical Ticked Loop object";
 
     auto mainToAudioMailBox =
         std::shared_ptr<Quakman::Threads::MainToAudioMailBox>
             (new Quakman::Threads::MainToAudioMailBox());
-    VLOG(1) << "Create a mail box between main and audio threads.";
+    DLOG(INFO) << "Create a mail box between main and audio threads.";
 
     auto audioTickedLoop = Quakman::Threads::AudioTickedLoop(mainToAudioMailBox);
-    audioTickedLoop.SetMaxTicksPerSecond(60);
-    VLOG(1) << "Initialize an Audio Ticked Loop object.";
+    audioTickedLoop.SetMaxTicksPerSecond(1);
+    DLOG(INFO) << "Initialize an Audio Ticked Loop object.";
    
     std::thread graphicalThread (&Quakman::Threads::GraphicalTickedLoop::Run, &graphicalTickedLoop);
-    VLOG(1) << "Start a Graphical thread.";
+    DLOG(INFO) << "Start a Graphical thread.";
     std::thread audioThread (&Quakman::Threads::AudioTickedLoop::Run, &audioTickedLoop);
-    VLOG(1) << "Start an Audio thread.";
+    DLOG(INFO) << "Start an Audio thread.";
 
     Quakman::Graphics::Drawable drawableWall {
         .pathToAtlas = "../res/quakman-atlas.jpg",
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
         .pathToFile = "../res/WOW.wav",
         .startTime = 0.0f
     };
-    VLOG(1) << "Initialize a Drawable and a Playable test objects.";
+    DLOG(INFO) << "Initialize a Drawable and a Playable test objects.";
 
     mainToGraphicMailBox->mutex.lock();
     mainToGraphicMailBox->downwardMessages.push
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
             .position = {400,200}, .data = drawableWall}
         );
     mainToGraphicMailBox->mutex.unlock();
-    VLOG(1) << "Command a Graphical thread to load the test Drawable.";
+    DLOG(INFO) << "Command a Graphical thread to load the test Drawable.";
 
     mainToAudioMailBox->mutex.lock();
     mainToAudioMailBox->downwardMessages.push
@@ -65,11 +65,11 @@ int main(int argc, char* argv[])
               .volume = 100.0f, .pitch = 1.0f, .data = playableSound }
         );
     mainToAudioMailBox->mutex.unlock();
-    VLOG(1) << "Command an Audio thread to load the test Playable.";
+    DLOG(INFO) << "Command an Audio thread to load the test Playable.";
 
 /* 
     float runner = 0.0f;
-    VLOG(1) << "Start a Main Loop.";
+    DLOG(INFO) << "Start a Main Loop.";
     while (true) 
     {
         mainToGraphicMailBox->mutex.lock();
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
                         .data = drawableWall}
         );
         mainToGraphicMailBox->mutex.unlock();
-        VLOG(1) << "Command the Graphical thread to draw the test Drawable.";
+        DLOG(INFO) << "Command the Graphical thread to draw the test Drawable.";
         
         runner+=0.05f;
         if(runner > 1.0f)
@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
                     .volume = 100.0f, .pitch = 1.0f, .data = playableSound }
                 );
             mainToAudioMailBox->mutex.unlock();
-            VLOG(1) << "Command the Audio thread to play the test Playable.";
+            DLOG(INFO) << "Command the Audio thread to play the test Playable.";
         }
         std::this_thread::sleep_for(std::chrono::milliseconds{100});
     }
