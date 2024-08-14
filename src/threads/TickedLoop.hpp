@@ -14,6 +14,6 @@ namespace Quakman::Threads
         virtual bool WorkWithMailBox() = 0;   
 
     private:
-        int maxTicksPerSec = 60;
+        int maxTicksPerSec = 1;
     };
 }

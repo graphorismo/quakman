@@ -1,9 +1,15 @@
 
 include(FetchContent)
+
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.x)
+    GIT_TAG 2.6.1)
 FetchContent_MakeAvailable(SFML)
+
+FetchContent_Declare(glog
+    GIT_REPOSITORY https://github.com/google/glog.git
+    GIT_TAG v0.7.1)
+FetchContent_MakeAvailable(glog)
 
 add_executable(QuakMan main.cpp
 
@@ -26,4 +32,4 @@ add_executable(QuakMan main.cpp
     threads/TickedLoop.hpp  threads/TickedLoop.cpp
 )
 
-target_link_libraries(QuakMan sfml-system sfml-graphics sfml-audio)
+target_link_libraries(QuakMan glog sfml-system sfml-graphics sfml-audio)

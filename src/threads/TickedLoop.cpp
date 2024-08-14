@@ -1,17 +1,23 @@
+#include <glog/logging.h>
+
 #include <chrono>
-#include <thread>
 
 #include "TickedLoop.hpp"
 
 using namespace Quakman::Threads;
+using namespace std::chrono_literals;
 
 void TickedLoop::SetMaxTicksPerSecond(int maxTicks)
 {
-    maxTicksPerSec = maxTicks;
+    if (maxTicks > 0)
+        maxTicksPerSec = maxTicks;
+    else
+        maxTicksPerSec = 1;
 }
 
 void TickedLoop::Run()
 {
+    VLOG(2) <<"  Starting the Ticked Loop.";
     bool shouldExit= false;
     while (!shouldExit) 
     {
@@ -26,8 +32,8 @@ void TickedLoop::Run()
                 (std::chrono::steady_clock::now());
 
         auto processTime = endTime - startTime;
-        auto remainTime = processTime % (1000 / maxTicksPerSec);
-        std::this_thread::sleep_for(remainTime);
+        auto remainTime = (1000ms / maxTicksPerSec) - processTime;
+        std::this_thread::sleep_for(std::chrono::milliseconds(remainTime));
     
     }
 }
