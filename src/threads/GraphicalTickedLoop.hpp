@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "../graphics/SfmlGraphicalEngine.hpp"
+#include "../graphics/RaylibGraphicalEngine.hpp"
 #include "TickedLoop.hpp"
 #include "Messages.hpp"
 
@@ -21,7 +21,7 @@ namespace Quakman::Threads
 
         std::shared_ptr<Quakman::Graphics::AbstractGraphicalOutput> graphicalEngine = 
             std::shared_ptr<Quakman::Graphics::AbstractGraphicalOutput>
-                (new Quakman::Graphics::SfmlGraphicalEngine(800, 600));
+                (new Quakman::Graphics::RaylibGraphicalEngine(800, 600));
     };
 
 };

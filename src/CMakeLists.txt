@@ -1,10 +1,10 @@
 
 include(FetchContent)
 
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.1)
-FetchContent_MakeAvailable(SFML)
+FetchContent_Declare(raylib
+    GIT_REPOSITORY https://github.com/raysan5/raylib.git
+    GIT_TAG 5.0)
+FetchContent_MakeAvailable(raylib)
 
 FetchContent_Declare(glog
     GIT_REPOSITORY https://github.com/google/glog.git
@@ -14,12 +14,12 @@ FetchContent_MakeAvailable(glog)
 add_executable(QuakMan main.cpp
 
     audio/AbstractAudioOutput.hpp
-    audio/SfmlAudioEngine.hpp audio/SfmlAudioEngine.cpp
+    audio/RaylibAudioEngine.hpp audio/RaylibAudioEngine.cpp
     audio/Soundable.hpp audio/Soundable.cpp
 
     graphics/AbstractGraphicalOutput.hpp
     graphics/Drawable.hpp graphics/Drawable.cpp
-    graphics/SfmlGraphicalEngine.hpp graphics/SfmlGraphicalEngine.cpp
+    graphics/RaylibGraphicalEngine.hpp graphics/RaylibGraphicalEngine.cpp
     graphics/Writeable.hpp
 
     math/Vector2i.hpp math/Vector2i.cpp
@@ -32,4 +32,4 @@ add_executable(QuakMan main.cpp
     threads/TickedLoop.hpp  threads/TickedLoop.cpp
 )
 
-target_link_libraries(QuakMan glog sfml-system sfml-graphics sfml-audio)
+target_link_libraries(QuakMan glog raylib)

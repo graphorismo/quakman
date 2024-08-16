@@ -20,7 +20,7 @@ bool AudioTickedLoop::WorkWithMailBox()
         mailBox->mutex.unlock();
         return false;
     }
-    auto message = mailBox->downwardMessages.top();
+    auto message = mailBox->downwardMessages.front();
     mailBox->downwardMessages.pop();
     mailBox->mutex.unlock();
     switch (message.command) {

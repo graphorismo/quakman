@@ -13,7 +13,6 @@ int main(int argc, char* argv[])
 {
     fLB::FLAGS_alsologtostderr = 1;
     google::InitGoogleLogging(argv[0]);
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
     google::InstallFailureSignalHandler();
     
     auto mainToGraphicMailBox = 
@@ -22,7 +21,7 @@ int main(int argc, char* argv[])
     DLOG(INFO) << "Create a mail box between main and graphical threads"; 
 
     auto graphicalTickedLoop = Quakman::Threads::GraphicalTickedLoop(mainToGraphicMailBox);
-    graphicalTickedLoop.SetMaxTicksPerSecond(1);
+    graphicalTickedLoop.SetMaxTicksPerSecond(60);
     DLOG(INFO) << "Initialize a Graphical Ticked Loop object";
 
     auto mainToAudioMailBox =
@@ -31,7 +30,7 @@ int main(int argc, char* argv[])
     DLOG(INFO) << "Create a mail box between main and audio threads.";
 
     auto audioTickedLoop = Quakman::Threads::AudioTickedLoop(mainToAudioMailBox);
-    audioTickedLoop.SetMaxTicksPerSecond(1);
+    audioTickedLoop.SetMaxTicksPerSecond(60);
     DLOG(INFO) << "Initialize an Audio Ticked Loop object.";
    
     std::thread graphicalThread (&Quakman::Threads::GraphicalTickedLoop::Run, &graphicalTickedLoop);
@@ -40,7 +39,7 @@ int main(int argc, char* argv[])
     DLOG(INFO) << "Start an Audio thread.";
 
     Quakman::Graphics::Drawable drawableWall {
-        .pathToAtlas = "../res/quakman-atlas.jpg",
+        .pathToAtlas = "../res/quakman-atlas.png",
         .atlasCutStart = {0,0},
         .atlasCutEnd = {40, 40}
     };
@@ -67,7 +66,6 @@ int main(int argc, char* argv[])
     mainToAudioMailBox->mutex.unlock();
     DLOG(INFO) << "Command an Audio thread to load the test Playable.";
 
-/* 
     float runner = 0.0f;
     DLOG(INFO) << "Start a Main Loop.";
     while (true) 
@@ -94,9 +92,8 @@ int main(int argc, char* argv[])
             mainToAudioMailBox->mutex.unlock();
             DLOG(INFO) << "Command the Audio thread to play the test Playable.";
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds{100});
+        std::this_thread::sleep_for(std::chrono::milliseconds{1000/60});
     }
-    */
     graphicalThread.join();
     audioThread.join();
     

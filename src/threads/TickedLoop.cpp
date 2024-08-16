@@ -17,7 +17,7 @@ void TickedLoop::SetMaxTicksPerSecond(int maxTicks)
 
 void TickedLoop::Run()
 {
-    DLOG(INFO) <<"  Starting the Ticked Loop.";
+    DLOG(INFO) <<"Starting the Ticked Loop.";
     bool shouldExit= false;
     while (!shouldExit) 
     {

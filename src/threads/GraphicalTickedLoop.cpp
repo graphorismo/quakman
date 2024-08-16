@@ -21,7 +21,7 @@ bool GraphicalTickedLoop::WorkWithMailBox()
         DLOG(INFO) <<"There is no messages for the graphical thread";
         return false;
     }
-    Quakman::Threads::GraphicalThreadInput message = mailBox->downwardMessages.top();
+    Quakman::Threads::GraphicalThreadInput message = mailBox->downwardMessages.front();
     mailBox->downwardMessages.pop();
     mailBox->mutex.unlock();
     switch (message.command) {
@@ -36,7 +36,7 @@ bool GraphicalTickedLoop::WorkWithMailBox()
         
         case Quakman::Threads::GraphicalThreadCommands::DRAW:
             DLOG(INFO) <<"There is a DRAW message for the graphical thread";
-            if (message.data.index() == 0)
+            if (std::holds_alternative<Quakman::Graphics::Drawable>(message.data))
                 graphicalEngine->Draw
                     (std::get<Quakman::Graphics::Drawable>(message.data), message.position);
             else
@@ -59,6 +59,5 @@ bool GraphicalTickedLoop::WorkWithMailBox()
             DLOG(INFO) <<"There is a PAUSE message for the graphical thread";
             return false;
     }  
-    return true;
-    DLOG(INFO) <<"Something went wrong, code must be unrechable";
+    return false; 
 } 

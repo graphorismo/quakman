@@ -2,25 +2,24 @@
 
 #include <unordered_map>
 
-#include <SFML/Audio.hpp>
+#include <raylib.h>
 
 #include "AbstractAudioOutput.hpp"
-#include "SFML/Audio/Sound.hpp"
 #include "Soundable.hpp"
 
 
 namespace Quakman::Audio
 {
     
-    class SfmlAudioEngine : public AbstractAudioOutput
+    class RaylibAudioEngine : public AbstractAudioOutput
     {
     public:
-        SfmlAudioEngine();
+        RaylibAudioEngine();
+        virtual ~RaylibAudioEngine();
 
         virtual void Load(Soundable soundable) override;
         virtual void Play(Soundable soundable, float volume, float pitch) override;
     private:
-        std::pmr::unordered_map<Soundable, sf::SoundBuffer> soundableToSoundBuffer;
-        sf::Sound playingSound;
+        std::pmr::unordered_map<Soundable, ::Sound> soundableToSound;
     };
 }

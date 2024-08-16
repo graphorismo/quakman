@@ -1,7 +1,7 @@
 #pragma once
 
 #include <mutex>
-#include <stack>
+#include <queue>
 
 namespace Quakman::Threads
 {
@@ -10,7 +10,7 @@ namespace Quakman::Threads
     {
     public: 
         std::mutex mutex;
-        std::stack<UpwardMessagesType> upwardMessages;
-        std::stack<DownwardMessagesType> downwardMessages;
+        std::queue<UpwardMessagesType> upwardMessages;
+        std::queue<DownwardMessagesType> downwardMessages;
     };
 }

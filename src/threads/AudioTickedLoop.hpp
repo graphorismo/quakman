@@ -5,7 +5,7 @@
 #include "Messages.hpp"
 #include "TickedLoop.hpp"
 #include "../audio/AbstractAudioOutput.hpp"
-#include "../audio/SfmlAudioEngine.hpp"
+#include "../audio/RaylibAudioEngine.hpp"
 
 namespace Quakman::Threads 
 {
@@ -21,7 +21,7 @@ namespace Quakman::Threads
         std::shared_ptr<MainToAudioMailBox> mailBox;
         std::shared_ptr<Quakman::Audio::AbstractAudioOutput> audioEngine = 
             std::shared_ptr<Quakman::Audio::AbstractAudioOutput>
-                (new Quakman::Audio::SfmlAudioEngine());
+                (new Quakman::Audio::RaylibAudioEngine());
     };
 
 }
